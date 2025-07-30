@@ -8,31 +8,29 @@
 
 body {
     margin: 0;
+    font-size: 1em;
     font-family: "Nunito Sans", Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .dice h1 {
     display: flex;
     justify-content: center;
-    font-size: 2.5em;
     height: 190px;
     width: 150px;
     background-repeat: no-repeat;
     background-size: 150px 190px;
-    line-height: 4;
+    line-height: 5;
 }
 
 button {
-    font-size: 3em;
     padding: 0.25em;
-    width: 180px;
 }
 
 .diceSection, .diceButtons{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
     flex-direction: row;
     flex-wrap: wrap;
 }

@@ -11,11 +11,23 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div id="diceSection" class="diceSection"></div>
-        <div class="diceButtons">
-            <button id="removeButton">-</button>
-            <button id="rollButton">Roll</button>
-            <button id="addButton">+</button>
+        <button id="diceToggle">Dice</button>
+        <button id="diceHistory">Dice History</button>
+        <div id="dicePage">
+            <div id="diceSection" class="diceSection"></div>
+            <h1 id="totalText"></h1>
+            <h1 id="wildMagicSurgeText"></h1>
+            <div class="diceButtons">
+                <button id="removeButton">-</button>
+                <button id="rollButton">Roll</button>
+                <button id="addD20Button">+D20</button>
+                <button id="addD12Button">+D12</button>
+                <button id="addD10Button">+D10</button>
+                <button id="addD8Button">+D8</button>
+                <button id="addD6Button">+D6</button>
+                <button id="addD4Button">+D4</button>
+                <button id="addD100Button">+D100</button>
+            </div>
         </div>
         <script src="js/dice.js"></script>
     </body>
