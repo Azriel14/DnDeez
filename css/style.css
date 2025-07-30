@@ -11,21 +11,15 @@ body {
     font-family: "Nunito Sans", Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.diceSection {
-    margin: 7% 0%
-}
-
-.diceSection, .diceButtons{
+.dice h1 {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 50px;
-    flex-direction: row;
-}
-
-h1 {
     font-size: 3em;
-    color: white;
+    height: 190px;
+    width: 150px;
+    background-repeat: no-repeat;
+    background-size: 150px 190px;
+    line-height: 3.25;
 }
 
 button {
@@ -34,11 +28,11 @@ button {
     width: 180px;
 }
 
-.dice {
-    width: 150px;
-    height: 150px; 
-    background-color: var(--red); 
+.diceSection, .diceButtons{
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 50px;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
