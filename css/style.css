@@ -1,0 +1,48 @@
+:root {
+    --blue: #5BC0EB;
+    --yellow: #FDE74C;
+    --green: #9BC53D;
+    --red: #C3423F;
+    --dark: #211A1E;
+}
+
+* {
+    transition: background-color 0.25s;
+}
+
+body {
+    margin: 0;
+    font-family: "Nunito Sans", Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.diceSection {
+    margin: 7% 0%
+}
+
+.diceSection, .diceButtons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    flex-direction: row;
+}
+
+h1 {
+    font-size: 3em;
+    color: white;
+}
+
+button {
+    font-size: 3em;
+    padding: 0.25em;
+    width: 180px;
+}
+
+.dice {
+    width: 150px;
+    height: 150px; 
+    background-color: var(--red); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
