@@ -6,10 +6,6 @@
     --dark: #211A1E;
 }
 
-* {
-    transition: background-color 0.25s;
-}
-
 body {
     margin: 0;
     font-family: "Nunito Sans", Verdana, Geneva, Tahoma, sans-serif;

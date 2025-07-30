@@ -1,9 +1,3 @@
-const blue = "#5BC0EB";
-const yellow = "#FDE74C";
-const green = "#9BC53D";
-const red = "#C3423F";
-const dark = "#211A1E";
-
 const d20Output = document.getElementById('d20Output');
 const d12Output = document.getElementById('d12Output');
 const d8Output = document.getElementById('d8Output');
@@ -37,7 +31,7 @@ function updateDiceVisibility() {
     });
     
     const enabledCount = dice.filter(die => die.enabled).length;
-    removeButton.disabled = enabledCount <= 1;
+    removeButton.disabled = enabledCount <= 0;
     addButton.disabled = enabledCount >= dice.length;
 }
 
@@ -64,10 +58,8 @@ function random(max) {
 }
 
 rollButton.onclick = async function rollDice() {
-    diceShape.style.backgroundColor = red;
-    
-    for (let i = 0; i < 10; i++) {
-        await new Promise(resolve => setTimeout(resolve, 55));
+    for (let i = 0; i < 35; i++) {
+        await new Promise(resolve => setTimeout(resolve, 25));
         dice.forEach(die => {
             if (die.output && die.enabled) {
                 const result = random(die.max);
