@@ -19,40 +19,117 @@ body {
 }
 
 button:not(.weirdoButton) {
-  transition: background-color 0.3s ease-in, color 0.3s ease-in,
-  filter 0.1s ease-in, transform 0.1s ease-in;
-  filter: drop-shadow(-10px 10px var(--red));
-  background-color: var(--dark);
-  border: 3px solid var(--dark);
-  font-optical-sizing: auto;
-  text-decoration: none;
-  display: inline-block;
-  font-style: normal;
-  text-align: center;
-  padding: 1em 2em;
-  font-weight: 800;
-  margin: 4px 2px;
-  cursor: pointer;
+  position: relative;
+  background: linear-gradient(45deg, var(--red), #c33f7e, #c3843f);
+  background-size: 400% 400%;
   color: white;
-  font-size: 1em;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 18px 40px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  animation: holographic-shift 3s ease-in-out infinite;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 20px;
+  box-shadow: 0 10px 30px rgba(195, 66, 63, 0.3);
+}
+
+@keyframes holographic-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+button:not(.weirdoButton):before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: holographic-rotate 2s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes holographic-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button:not(.weirdoButton):hover:before {
+  opacity: 1;
 }
 
 button:not(.weirdoButton):hover {
-  background-color: white;
-  color: var(--dark);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(195, 66, 63, 0.5);
 }
 
 button:not(.weirdoButton):active {
-  transform: translateX(-8px) translateY(8px);
-  filter: drop-shadow(-2px 2px var(--red));
+  transform: translateY(-1px) scale(0.98);
 }
 
 button:not(.weirdoButton):disabled {
-  transform: translateX(-8px) translateY(8px);
-  filter: drop-shadow(-2px 2px var(--red));
-  background-color: var(--dim);
-  cursor: default;
-  color: white;
+  background: linear-gradient(45deg, #444, #666, #555, #444, #333);
+  background-size: 400% 400%;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+  animation: disabled-pulse 4s ease-in-out infinite;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform: none;
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes disabled-pulse {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.6;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+}
+
+button:not(.weirdoButton):disabled:before {
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: disabled-rotate 6s linear infinite;
+  opacity: 0.3;
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes disabled-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button:not(.weirdoButton):disabled:hover {
+  transform: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 #diceToggle {
@@ -71,7 +148,7 @@ button:not(.weirdoButton):disabled {
 }
 
 #diceToggle::after,
-#diceToggle::before{
+#diceToggle::before {
   transition: transform 0.2s ease-in, filter 0.1s ease-in;
   background-position: inherit;
   background-repeat: inherit;
@@ -89,43 +166,46 @@ button:not(.weirdoButton):disabled {
 
 #diceToggle:hover {
   transform: translate(0px, -1px);
+  filter: brightness(1.2);
 }
 
 #diceToggle:hover::before {
   transform: translate(1px, 1px);
-  filter: hue-rotate(210deg);
+  filter: brightness(1.2) hue-rotate(210deg);
   opacity: 1;
 }
 
 #diceToggle:hover::after {
   transform: translate(-1px, 1px);
-  filter: hue-rotate(150deg);
+  filter: brightness(1.2) hue-rotate(150deg);
   opacity: 1;
 }
 
 #diceToggle:active {
-  filter: grayscale(100%) brightness(0.7);
+  filter: grayscale(100%) brightness(0.6);
   transform: translate(0px, 0px);
 }
 
 #diceToggle:active::before {
-  filter: grayscale(100%) brightness(0.7);
+  filter: grayscale(100%) brightness(0.6);
   transform: translate(0px, 0px);
 }
 
 #diceToggle:active::after {
-  filter: grayscale(100%) brightness(0.7);
+  filter: grayscale(100%) brightness(0.6);
   transform: translate(0px, 0px);
 }
 
 #dicePage {
   background: rgba(13, 13, 13, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(0.5px);
   border-radius: 25px;
   padding: 50px;
   margin: 50px;
 }
 
-.histButtons{
+.histButtons {
   justify-content: center;
   margin-bottom: 25px;
   align-items: center;
@@ -141,10 +221,9 @@ button:not(.weirdoButton):disabled {
 }
 
 #rollButton {
-  font-weight: 1100;
+  margin-top: 25px;
   flex-basis: 100%;
   font-size: 2em;
-  padding: 20px;
 }
 
 #addD20Button {
@@ -157,7 +236,6 @@ button:not(.weirdoButton):disabled {
   position: relative;
   cursor: pointer;
   height: 125px;
-  margin: 20px;
   width: 125px;
 }
 
@@ -171,7 +249,6 @@ button:not(.weirdoButton):disabled {
   position: relative;
   cursor: pointer;
   height: 125px;
-  margin: 20px;
   width: 125px;
 }
 
@@ -186,7 +263,6 @@ button:not(.weirdoButton):disabled {
   position: relative;
   cursor: pointer;
   height: 125px;
-  margin: 20px;
   width: 125px;
 }
 
@@ -200,7 +276,6 @@ button:not(.weirdoButton):disabled {
   position: relative;
   cursor: pointer;
   height: 125px;
-  margin: 20px;
   width: 125px;
 }
 
@@ -214,7 +289,6 @@ button:not(.weirdoButton):disabled {
   position: relative;
   cursor: pointer;
   height: 125px;
-  margin: 20px;
   width: 125px;
 }
 
@@ -228,12 +302,11 @@ button:not(.weirdoButton):disabled {
   position: relative;
   cursor: pointer;
   height: 125px;
-  margin: 20px;
   width: 125px;
 }
 
 .dice h1 {
-  margin-top: 10px;
+  margin: 10px 0;
   -webkit-text-stroke: 1px var(--dark);
   background-repeat: no-repeat;
   background-size: 150px 190px;

@@ -11,7 +11,6 @@ let histOpen = true;
 
 const diceSection = document.getElementById("diceSection");
 const rollButton = document.getElementById("rollButton");
-const totalText = document.getElementById("totalText");
 
 const addD20Button = document.getElementById("addD20Button");
 const addD12Button = document.getElementById("addD12Button");
@@ -99,7 +98,6 @@ async function rollDice() {
   rollButton.disabled = false;
 
   const total = results.reduce((a, b) => a + b, 0);
-  totalText.textContent = total;
 
   rollHistory.push({
     date: new Date().toISOString(),
@@ -122,7 +120,6 @@ function diceToggleFunc() {
       diceSection.removeChild(diceSection.firstChild);
     }
 
-    totalText.textContent = "";
     diceOpen = false;
 
     updateDiceButtons();
