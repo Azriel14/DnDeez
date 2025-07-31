@@ -19,24 +19,24 @@ body {
 }
 
 button:not(.weirdoButton) {
-  position: relative;
   background: linear-gradient(45deg, var(--red), #c33f7e, #c3843f);
+  animation: holographic-shift 3s ease-in-out infinite;
+  box-shadow: 0 10px 30px rgba(195, 66, 63, 0.3);
   background-size: 400% 400%;
-  color: white;
-  font-size: 1.2em;
-  font-weight: bold;
-  padding: 18px 40px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
+  transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: all 0.3s ease;
-  animation: holographic-shift 3s ease-in-out infinite;
-  overflow: hidden;
-  width: 100%;
+  border-radius: 15px;
+  padding: 18px 40px;
+  position: relative;
+  font-weight: bold;
+  font-size: 1.2em;
   margin-top: 20px;
-  box-shadow: 0 10px 30px rgba(195, 66, 63, 0.3);
+  overflow: hidden;
+  cursor: pointer;
+  color: white;
+  border: none;
+  width: 100%;
 }
 
 @keyframes holographic-shift {
@@ -50,12 +50,6 @@ button:not(.weirdoButton) {
 }
 
 button:not(.weirdoButton):before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
   background: conic-gradient(
     from 0deg,
     transparent,
@@ -63,8 +57,14 @@ button:not(.weirdoButton):before {
     transparent
   );
   animation: holographic-rotate 2s linear infinite;
-  opacity: 0;
   transition: opacity 0.3s ease;
+  position: absolute;
+  content: "";
+  opacity: 0;
+  height: 200%;
+  width: 200%;
+  left: -50%;
+  top: -50%;
 }
 
 @keyframes holographic-rotate {
@@ -78,8 +78,8 @@ button:not(.weirdoButton):hover:before {
 }
 
 button:not(.weirdoButton):hover {
-  transform: translateY(-3px);
   box-shadow: 0 15px 40px rgba(195, 66, 63, 0.5);
+  transform: translateY(-3px);
 }
 
 button:not(.weirdoButton):active {
@@ -88,13 +88,13 @@ button:not(.weirdoButton):active {
 
 button:not(.weirdoButton):disabled {
   background: linear-gradient(45deg, #444, #666, #555, #444, #333);
-  background-size: 400% 400%;
-  color: rgba(255, 255, 255, 0.3);
-  cursor: not-allowed;
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   animation: disabled-pulse 4s ease-in-out infinite;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.3);
+  background-size: 400% 400%;
+  cursor: not-allowed;
   transform: none;
-  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 @keyframes disabled-pulse {
@@ -116,9 +116,9 @@ button:not(.weirdoButton):disabled:before {
     rgba(255, 255, 255, 0.1),
     transparent
   );
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   animation: disabled-rotate 6s linear infinite;
   opacity: 0.3;
-  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 @keyframes disabled-rotate {
@@ -128,8 +128,8 @@ button:not(.weirdoButton):disabled:before {
 }
 
 button:not(.weirdoButton):disabled:hover {
-  transform: none;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform: none;
 }
 
 #diceToggle {
@@ -140,11 +140,13 @@ button:not(.weirdoButton):disabled:hover {
   background-position: center;
   background-size: contain;
   display: inline-block;
-  position: relative;
+  position: fixed;
   cursor: pointer;
   height: 125px;
   margin: 20px;
   width: 125px;
+  bottom: 0;
+  right: 0;
 }
 
 #diceToggle::after,
@@ -156,9 +158,9 @@ button:not(.weirdoButton):disabled:hover {
   background-size: inherit;
   mix-blend-mode: screen;
   position: absolute;
-  content: "";
   height: 100%;
   width: 100%;
+  content: "";
   opacity: 0;
   left: 0;
   top: 0;
@@ -197,8 +199,9 @@ button:not(.weirdoButton):disabled:hover {
 }
 
 #dicePage {
-  background: rgba(13, 13, 13, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(13, 13, 13, 0.6);
+  transition: opacity 0.1s ease-in;
   backdrop-filter: blur(0.5px);
   border-radius: 25px;
   padding: 50px;

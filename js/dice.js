@@ -109,12 +109,14 @@ async function rollDice() {
   renderHistory();
 }
 
-function diceToggleFunc() {
+async function diceToggleFunc() {
   if (diceOpen === false) {
-    dicePage.style.display = "block";
+    dicePage.style.opacity = "1";
     diceOpen = true;
   } else if (diceOpen === true) {
-    dicePage.style.display = "none";
+    dicePage.style.opacity = "0";
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     while (diceSection.firstChild) {
       diceSection.removeChild(diceSection.firstChild);
