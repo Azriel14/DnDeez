@@ -11,24 +11,27 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
     </head>
     <body>
-        <button id="diceToggle">Dice</button>
-        <button id="diceHistory">Dice History</button>
-        <div id="dicePage">
+        <button id="diceToggle" class="weirdoButton"></button>
+        <section id="dicePage">
+            <div class="histButtons">
+                <button id="histToggle">Dice History</button>
+                <button id="clearHistoryButton">Clear History</button>
+            </div>
+            <div id="historySection"></div>
             <div id="diceSection" class="diceSection"></div>
             <h1 id="totalText"></h1>
-            <h1 id="wildMagicSurgeText"></h1>
             <div class="diceButtons">
-                <button id="removeButton">-</button>
-                <button id="rollButton">Roll</button>
-                <button id="addD20Button">+D20</button>
-                <button id="addD12Button">+D12</button>
-                <button id="addD10Button">+D10</button>
-                <button id="addD8Button">+D8</button>
-                <button id="addD6Button">+D6</button>
-                <button id="addD4Button">+D4</button>
-                <button id="addD100Button">+D100</button>
+                <button id="rollButton">ROLL</button>
+                <button id="addD20Button" class="weirdoButton"></button>
+                <button id="addD12Button" class="weirdoButton"></button>
+                <button id="addD10Button" class="weirdoButton"></button>
+                <button id="addD100Button" class="weirdoButton">%</button>
+                <button id="addD8Button" class="weirdoButton"></button>
+                <button id="addD6Button" class="weirdoButton"></button>
+                <button id="addD4Button" class="weirdoButton"></button>
+                </div>
             </div>
-        </div>
+        </section>
         <script src="js/dice.js"></script>
     </body>
 </html>
