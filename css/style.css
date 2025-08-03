@@ -3,43 +3,15 @@
   --yellow: #f1c83e;
   --green: #2db039;
   --red: #c3423f;
+  --gradient1: #c33f7e;
+  --gradient2: #c3843f;
   --dark: #211a1e;
   --dim: #634e5a;
 }
 
-* {
-  margin: 0;
-}
+/* Animations */
 
-body {
-  background-image: url(https://i.ibb.co/TY0f4m4/Dark-Space.png);
-  font-family: "Nunito Sans", Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 1em;
-  color: white;
-}
-
-button:not(.weirdoButton) {
-  background: linear-gradient(45deg, var(--red), #c33f7e, #c3843f);
-  animation: holographic-shift 3s ease-in-out infinite;
-  box-shadow: 0 10px 30px rgba(195, 66, 63, 0.3);
-  background-size: 400% 400%;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 15px;
-  padding: 18px 40px;
-  position: relative;
-  font-weight: bold;
-  font-size: 1.2em;
-  margin-top: 20px;
-  overflow: hidden;
-  cursor: pointer;
-  color: white;
-  border: none;
-  width: 100%;
-}
-
-@keyframes holographic-shift {
+@keyframes holographicShift {
   0%,
   100% {
     background-position: 0% 50%;
@@ -49,55 +21,7 @@ button:not(.weirdoButton) {
   }
 }
 
-button:not(.weirdoButton):before {
-  background: conic-gradient(
-    from 0deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  animation: holographic-rotate 2s linear infinite;
-  transition: opacity 0.3s ease;
-  position: absolute;
-  content: "";
-  opacity: 0;
-  height: 200%;
-  width: 200%;
-  left: -50%;
-  top: -50%;
-}
-
-@keyframes holographic-rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-button:not(.weirdoButton):hover:before {
-  opacity: 1;
-}
-
-button:not(.weirdoButton):hover {
-  box-shadow: 0 15px 40px rgba(195, 66, 63, 0.5);
-  transform: translateY(-3px);
-}
-
-button:not(.weirdoButton):active {
-  transform: translateY(-1px) scale(0.98);
-}
-
-button:not(.weirdoButton):disabled {
-  background: linear-gradient(45deg, #444, #666, #555, #444, #333);
-  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  animation: disabled-pulse 4s ease-in-out infinite;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  color: rgba(255, 255, 255, 0.3);
-  background-size: 400% 400%;
-  cursor: not-allowed;
-  transform: none;
-}
-
-@keyframes disabled-pulse {
+@keyframes disabledShift {
   0%,
   100% {
     background-position: 0% 50%;
@@ -109,7 +33,127 @@ button:not(.weirdoButton):disabled {
   }
 }
 
-button:not(.weirdoButton):disabled:before {
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* TODO SLEEP */
+@keyframes diceRoll {
+
+}
+
+/* Body */
+
+* {
+  margin: 0;
+}
+
+body {
+  background-image: url(https://i.ibb.co/TY0f4m4/Dark-Space.png);
+  font-family: "Nunito Sans", Verdana, Geneva, Tahoma, sans-serif;
+  color: white;
+}
+
+/* Sections */
+
+#dicePage {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(13, 13, 13, 0.6);
+  transition: all 0.1s ease-in;
+  backdrop-filter: blur(0.5px);
+  border-radius: 25px;
+  padding: 50px;
+  margin: 50px;
+}
+
+.diceSection,
+.diceButtons {
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 30px;
+}
+
+#resultsContainer {
+  flex-direction: column;
+  position: fixed;
+  display: flex;
+  z-index: 1000;
+  bottom: 20px;
+  left: 20px;
+  gap: 10px;
+}
+
+/* Buttons */
+
+/* --Holographic */
+
+button:not(.imageButton) {
+  background: linear-gradient(45deg, var(--red), var(--gradient1), var(--gradient2));
+  animation: holographicShift 3s ease-in-out infinite;
+  box-shadow: 0 10px 30px rgba(195, 66, 63, 0.3);
+  background-size: 400% 400%;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  border-radius: 15px;
+  letter-spacing: 1px;
+  padding: 18px 40px;
+  position: relative;
+  font-weight: bold;
+  overflow: hidden;
+  cursor: pointer;
+  color: white;
+  font-size: 1em;
+  border: none;
+}
+
+button:not(.imageButton):before {
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: rotate 2s linear infinite;
+  transition: all 0.3s ease;
+  position: absolute;
+  height: 200%;
+  width: 200%;
+  content: "";
+  opacity: 0;
+  left: -50%;
+  top: -50%;
+}
+
+button:not(.imageButton):hover:before {
+  opacity: 1;
+}
+
+button:not(.imageButton):hover {
+  box-shadow: 0 15px 40px rgba(195, 66, 63, 0.5);
+  transform: translateY(-3px);
+}
+
+button:not(.imageButton):active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+button:not(.imageButton):disabled {
+  background: linear-gradient(45deg, #444, #666, #555, #444, #333);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: disabledShift 4s ease-in-out infinite;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.3);
+  background-size: 400% 400%;
+  cursor: not-allowed;
+  transform: none;
+}
+
+button:not(.imageButton):disabled:before {
   background: conic-gradient(
     from 0deg,
     transparent,
@@ -117,96 +161,55 @@ button:not(.weirdoButton):disabled:before {
     transparent
   );
   transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  animation: disabled-rotate 6s linear infinite;
+  animation: rotate 6s linear infinite;
   opacity: 0.3;
 }
 
-@keyframes disabled-rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-button:not(.weirdoButton):disabled:hover {
+button:not(.imageButton):disabled:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   transform: none;
 }
 
-#diceToggle {
-  all: unset;
-  background-image: url("../assets/images/d20.svg");
-  transition: transform 0.2s ease-in, filter 0.1s ease-in;
+/* -- Toggle Die */
+
+.toggleContainer {
+  filter: drop-shadow(0 0 4px var(--red));
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
-  display: inline-block;
+  transition: all 0.3s ease;
   position: fixed;
-  cursor: pointer;
-  height: 125px;
   margin: 20px;
-  width: 125px;
   bottom: 0;
   right: 0;
 }
 
-#diceToggle::after,
-#diceToggle::before {
-  transition: transform 0.2s ease-in, filter 0.1s ease-in;
-  background-position: inherit;
-  background-repeat: inherit;
-  background-image: inherit;
-  background-size: inherit;
-  mix-blend-mode: screen;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  content: "";
-  opacity: 0;
-  left: 0;
-  top: 0;
+#diceToggle {
+  background: linear-gradient(45deg, var(--red), var(--gradient1), var(--gradient2));
+  animation: holographicShift 4s ease-in-out infinite;
+  -webkit-mask-image: url('../assets/images/d20.svg');
+  mask-image: url('../assets/images/d20.svg');
+  background-size: 400% 400%;
+  mask-repeat: no-repeat;
+  display: inline-block;
+  mask-position: center;
+  mask-size: contain;
+  min-height: 125px;
+  min-width: 125px;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
 }
 
-#diceToggle:hover {
-  transform: translate(0px, -1px);
-  filter: brightness(1.2);
+.toggleContainer:hover {
+  filter: drop-shadow(0 0 4px var(--red));
+  transform: translateY(-3px);
 }
 
-#diceToggle:hover::before {
-  transform: translate(1px, 1px);
-  filter: brightness(1.2) hue-rotate(210deg);
-  opacity: 1;
+.toggleContainer:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
-#diceToggle:hover::after {
-  transform: translate(-1px, 1px);
-  filter: brightness(1.2) hue-rotate(150deg);
-  opacity: 1;
-}
-
-#diceToggle:active {
-  filter: grayscale(100%) brightness(0.6);
-  transform: translate(0px, 0px);
-}
-
-#diceToggle:active::before {
-  filter: grayscale(100%) brightness(0.6);
-  transform: translate(0px, 0px);
-}
-
-#diceToggle:active::after {
-  filter: grayscale(100%) brightness(0.6);
-  transform: translate(0px, 0px);
-}
-
-#dicePage {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(13, 13, 13, 0.6);
-  transition: opacity 0.1s ease-in;
-  backdrop-filter: blur(0.5px);
-  border-radius: 25px;
-  padding: 50px;
-  margin: 50px;
-}
+/* -- Panel Buttons */
 
 .histButtons {
   justify-content: center;
@@ -229,9 +232,11 @@ button:not(.weirdoButton):disabled:hover {
   font-size: 2em;
 }
 
+/* -- Add Dice Buttons */
+
 #addD20Button {
   all: unset;
-  background-image: url("../assets/images/d20black.svg");
+  background-image: url("../assets/images/d20outline.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -244,7 +249,7 @@ button:not(.weirdoButton):disabled:hover {
 
 #addD12Button {
   all: unset;
-  background-image: url("../assets/images/d12black.svg");
+  background-image: url("../assets/images/d12outline.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -256,9 +261,9 @@ button:not(.weirdoButton):disabled:hover {
 }
 
 #addD10Button,
-#addD100Button {
+#addDPercentButton {
   all: unset;
-  background-image: url("../assets/images/d10black.svg");
+  background-image: url("../assets/images/d10outline.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -269,9 +274,16 @@ button:not(.weirdoButton):disabled:hover {
   width: 125px;
 }
 
+.percent {
+  -webkit-text-stroke: 2px var(--dark);
+  justify-content: center;
+  font-weight: 1000;
+  display: flex;
+}
+
 #addD8Button {
   all: unset;
-  background-image: url("../assets/images/d8black.svg");
+  background-image: url("../assets/images/d8outline.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -284,7 +296,7 @@ button:not(.weirdoButton):disabled:hover {
 
 #addD6Button {
   all: unset;
-  background-image: url("../assets/images/d6black.svg");
+  background-image: url("../assets/images/d6outline.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -297,7 +309,7 @@ button:not(.weirdoButton):disabled:hover {
 
 #addD4Button {
   all: unset;
-  background-image: url("../assets/images/d4black.svg");
+  background-image: url("../assets/images/d4outline.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -308,23 +320,93 @@ button:not(.weirdoButton):disabled:hover {
   width: 125px;
 }
 
-.dice h1 {
-  margin: 10px 0;
-  -webkit-text-stroke: 1px var(--dark);
-  background-repeat: no-repeat;
-  background-size: 150px 190px;
+/* Dice */
+
+.dice {
+  filter: drop-shadow(0 0 4px var(--red));
   justify-content: center;
-  line-height: 5;
+  align-items: center;
+  position: relative;
   display: flex;
+  margin: 10px 0;
+  line-height: 5;
   width: 150px;
 }
 
-.diceSection,
-.diceButtons {
+.diceBG {
+  background: linear-gradient(45deg, var(--red), var(--gradient1), var(--gradient2));
+  animation: holographicShift 4s ease-in-out infinite;
+  -webkit-mask-image: var(--mask-url);
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: var(--mask-url);
+  -webkit-mask-size: contain;
+  background-size: 400% 400%;
+  transition: all 0.3s ease;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  pointer-events: none;
+  mask-size: contain;
+  position: absolute;
+  inset: 0;
+}
+
+.dice h1 {
+  -webkit-text-stroke: 1px var(--dark);
   justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: wrap;
+  line-height: inherit;
+  position: relative;
+  user-select: none;
+  background: none;
+  color: white;
   display: flex;
-  gap: 30px;
+  width: 150px;
+  margin: 0;
+}
+
+.diceRolling {
+  animation: diceRoll 2.3s linear forwards;
+}
+
+/* Results Panels */
+
+.resultsPanel {
+  background: linear-gradient(45deg, var(--red), var(--gradient1), var(--gradient2));
+  animation: holographicShift 3s ease-in-out infinite;
+  box-shadow: 0 10px 30px rgba(195, 66, 63, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transform: translateX(-120%);
+  backdrop-filter: blur(10px);
+  background-size: 400% 400%;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  padding: 18px 25px;
+  font-weight: bold;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.resultsPanel.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.resultsPanel .diceInfo {
+  color: var(--yellow);
+  margin-bottom: 4px;
+}
+
+.resultsPanel .individualRolls , .resultsPanel .resultsLabel {
+  margin-bottom: 4px;
+}
+
+.resultsPanel .resultsValue {
+  font-size: 2em;
+  margin-bottom: 4px;
+}
+
+.resultsPanel.condensed {
+  max-width: 90px;
 }

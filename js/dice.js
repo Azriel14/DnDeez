@@ -2,12 +2,8 @@ const diceToggle = document.getElementById("diceToggle");
 const dicePage = document.getElementById("dicePage");
 
 const histToggle = document.getElementById("histToggle");
-let rollHistory = [];
 const historySection = document.getElementById("historySection");
 const clearHistoryButton = document.getElementById("clearHistoryButton");
-
-let diceOpen = true;
-let histOpen = true;
 
 const diceSection = document.getElementById("diceSection");
 const rollButton = document.getElementById("rollButton");
@@ -15,35 +11,117 @@ const rollButton = document.getElementById("rollButton");
 const addD20Button = document.getElementById("addD20Button");
 const addD12Button = document.getElementById("addD12Button");
 const addD10Button = document.getElementById("addD10Button");
+const addDPercentButton = document.getElementById("addDPercentButton");
 const addD8Button = document.getElementById("addD8Button");
 const addD6Button = document.getElementById("addD6Button");
 const addD4Button = document.getElementById("addD4Button");
-const addD100Button = document.getElementById("addD100Button");
+
+let rollHistory = [];
+let diceOpen = true;
+let histOpen = true;
+let isRolling = false;
+let activeResultsPanels = [];
 
 const diceTypes = {
-  20: { max: 20, url: "assets/images/d20.svg" },
-  12: { max: 12, url: "assets/images/d12.svg" },
-  10: { max: 10, url: "assets/images/d10.svg" },
-  100: { max: 10, url: "assets/images/d10.svg" },
-  8: { max: 8, url: "assets/images/d8.svg" },
-  6: { max: 6, url: "assets/images/d6.svg" },
-  4: { max: 4, url: "assets/images/d4.svg" },
+  20: { max: 20, url: "../assets/images/d20.svg" },
+  12: { max: 12, url: "../assets/images/d12.svg" },
+  10: { max: 10, url: "../assets/images/d10.svg" },
+  "%": { max: 10, url: "../assets/images/d10.svg" },
+  8: { max: 8, url: "../assets/images/d8.svg" },
+  6: { max: 6, url: "../assets/images/d6.svg" },
+  4: { max: 4, url: "../assets/images/d4.svg" },
 };
 
-let isRolling = false;
+// Dice Rolling and Results
+async function rollDice() {
+  isRolling = true;
+  rollButton.disabled = true;
+  const diceH1s = diceSection.querySelectorAll("h1[data-die-type]");
+  let results = [];
+  let dice = [];
 
+  diceH1s.forEach((h1) => {
+    if (h1.parentElement) {
+      h1.parentElement.classList.add("diceRolling");
+    }
+  });
+
+  for (let i = 0; i < 70; i++) {
+    await new Promise((resolve) => setTimeout(resolve, i));
+    diceH1s.forEach((h1, idx) => {
+      const type = h1.dataset.dieType;
+
+      if (diceTypes[type]) {
+        let roll;
+        if (type === "%") {
+          roll = Math.floor(Math.random() * 10);
+        } else {
+          roll = Math.floor(Math.random() * diceTypes[type].max) + 1;
+        }
+        h1.textContent =
+          type === "%" ? (roll * 10).toString().padStart(2, "0") : roll;
+        if (i === 69) {
+          results[idx] = type === "%" ? roll * 10 : roll;
+          dice[idx] = type;
+        }
+      }
+    });
+  }
+
+  diceH1s.forEach((h1) => {
+    if (h1.parentElement) {
+      h1.parentElement.classList.remove("diceRolling");
+    }
+  });
+
+  isRolling = false;
+  rollButton.disabled = false;
+
+  const total = results.reduce((a, b) => a + b, 0);
+
+  activeResultsPanels.forEach((panel) => {
+    panel.className = "resultsPanel condensed visible";
+    const resultsValue =
+      panel.querySelector(".resultsValue")?.textContent ||
+      panel
+        .querySelector(".condensedTotal")
+        ?.textContent?.replace("Total: ", "") ||
+      "0";
+    panel.innerHTML = `<div class="condensedTotal">Total: ${resultsValue}</div>`;
+  });
+
+  const diceResults = { dice, results };
+  createResultsPanel(diceResults, total, true);
+
+  rollHistory.push({
+    date: new Date().toISOString(),
+    dice: dice.slice(),
+    results: results.slice(),
+    total: total,
+  });
+  localStorage.setItem("diceRollHistory", JSON.stringify(rollHistory));
+  renderHistory();
+}
+
+// Dice Creation and Management
 function createDiceDiv(type) {
   const config = diceTypes[type];
   if (!config) return null;
 
   const div = document.createElement("div");
   div.classList.add("dice");
+  div.style.position = "relative";
+
+  const bgDiv = document.createElement("div");
+  bgDiv.classList.add("diceBG");
+  bgDiv.style.background = "";
+  bgDiv.style.setProperty("--mask-url", `url('${config.url}')`);
 
   const h1 = document.createElement("h1");
   h1.textContent = "0";
   h1.dataset.dieType = type;
-  h1.style.backgroundImage = `url('${config.url}')`;
 
+  div.appendChild(bgDiv);
   div.appendChild(h1);
 
   div.addEventListener("click", () => {
@@ -63,52 +141,109 @@ function addDice(type) {
   }
 }
 
-function updateDiceButtons() {
-  const hasDice = diceSection.querySelectorAll(".dice").length > 0;
-  rollButton.disabled = !hasDice;
-}
-
-async function rollDice() {
-  isRolling = true;
-  rollButton.disabled = true;
-  const diceH1s = diceSection.querySelectorAll("h1[data-die-type]");
-  let results = [];
-  let dice = [];
-  for (let i = 0; i < 70; i++) {
-    await new Promise((resolve) => setTimeout(resolve, i));
-    diceH1s.forEach((h1, idx) => {
-      const type = parseInt(h1.dataset.dieType, 10);
-      if (diceTypes[type]) {
-        let roll;
-        if (type === 100) {
-          roll = Math.floor(Math.random() * 10);
-        } else {
-          roll = Math.floor(Math.random() * diceTypes[type].max) + 1;
-        }
-        h1.textContent =
-          type === 100 ? (roll * 10).toString().padStart(2, "0") : roll;
-        if (i === 69) {
-          results[idx] = type === 100 ? roll * 10 : roll;
-          dice[idx] = type;
-        }
-      }
-    });
-  }
-  isRolling = false;
-  rollButton.disabled = false;
-
-  const total = results.reduce((a, b) => a + b, 0);
-
-  rollHistory.push({
-    date: new Date().toISOString(),
-    dice: dice.slice(),
-    results: results.slice(),
-    total: total,
+// Results Panel
+function createResultsPanel(diceResults, total, isLatest = true) {
+  const diceGroups = {};
+  diceResults.dice.forEach((die, index) => {
+    if (!diceGroups[die]) {
+      diceGroups[die] = {
+        count: 0,
+        results: [],
+      };
+    }
+    diceGroups[die].count++;
+    diceGroups[die].results.push(diceResults.results[index]);
   });
-  localStorage.setItem("diceRollHistory", JSON.stringify(rollHistory));
-  renderHistory();
+
+  const diceInfo = Object.keys(diceGroups)
+    .sort((a, b) => b - a)
+    .map((die) => `${diceGroups[die].count}d${die}`)
+    .join(" + ");
+
+  const individualRolls = diceResults.results.join("+");
+
+  const panel = document.createElement("div");
+  panel.className = isLatest ? "resultsPanel" : "resultsPanel condensed";
+
+  if (isLatest) {
+    panel.innerHTML = `
+      <div class="resultsLabel">Total</div>
+      <div class="resultsValue">${total}</div>
+      <div class="diceInfo">${diceInfo}</div>
+      <div class="individualRolls">${individualRolls}</div>
+    `;
+  } else {
+    panel.innerHTML = `
+      <div class="condensedTotal">Total: ${total}</div>
+    `;
+  }
+
+  if (!document.getElementById("resultsContainer")) {
+    const container = document.createElement("div");
+    container.id = "resultsContainer";
+    document.body.appendChild(container);
+  }
+
+  document.getElementById("resultsContainer").appendChild(panel);
+  activeResultsPanels.push(panel);
+
+  setTimeout(() => {
+    panel.classList.add("visible");
+  }, 50);
+
+  setTimeout(() => {
+    removeResultsPanel(panel);
+  }, 8000);
+
+  return panel;
 }
 
+function removeResultsPanel(panel) {
+  panel.classList.remove("visible");
+  setTimeout(() => {
+    if (panel.parentNode) {
+      panel.parentNode.removeChild(panel);
+    }
+    const index = activeResultsPanels.indexOf(panel);
+    if (index > -1) {
+      activeResultsPanels.splice(index, 1);
+    }
+  }, 400);
+}
+
+// History
+if (localStorage.getItem("diceRollHistory")) {
+  rollHistory = JSON.parse(localStorage.getItem("diceRollHistory"));
+}
+
+function renderHistory() {
+  if (!historySection) return;
+  historySection.innerHTML = "";
+
+  const typeDisplay = (type) => (type === "%" ? "d%" : `d${type}`);
+
+  rollHistory.forEach((entry, idx) => {
+    const item = document.createElement("h1");
+    item.textContent = `Roll ${idx + 1}: Dice [${entry.dice
+      .map(typeDisplay)
+      .join(", ")}], Results [${entry.results.join(", ")}], Total: ${
+      entry.total
+    }`;
+    historySection.appendChild(item);
+  });
+
+  updateHistoryButtons();
+}
+
+function clearHistory() {
+  localStorage.removeItem("diceRollHistory");
+  rollHistory = [];
+  renderHistory();
+  updateHistoryButtons();
+  activeResultsPanels.forEach((panel) => removeResultsPanel(panel));
+}
+
+// UI Toggles
 async function diceToggleFunc() {
   if (diceOpen === false) {
     dicePage.style.opacity = "1";
@@ -138,28 +273,10 @@ function histToggleFunc() {
   }
 }
 
-function clearHistory() {
-  localStorage.removeItem("diceRollHistory");
-  rollHistory = [];
-  renderHistory();
-  updateHistoryButtons();
-}
-
-if (localStorage.getItem("diceRollHistory")) {
-  rollHistory = JSON.parse(localStorage.getItem("diceRollHistory"));
-}
-
-function renderHistory() {
-  if (!historySection) return;
-  historySection.innerHTML = "";
-  rollHistory.forEach((entry, idx) => {
-    const item = document.createElement("h1");
-    item.textContent = `Roll ${idx + 1}: Dice [${entry.dice.join(
-      ", "
-    )}], Results [${entry.results.join(", ")}], Total: ${entry.total}`;
-    historySection.appendChild(item);
-  });
-  updateHistoryButtons();
+// Button Updates
+function updateDiceButtons() {
+  const hasDice = diceSection.querySelectorAll(".dice").length > 0;
+  rollButton.disabled = !hasDice;
 }
 
 function updateHistoryButtons() {
@@ -176,7 +293,7 @@ rollButton.onclick = rollDice;
 addD20Button.onclick = () => addDice(20);
 addD12Button.onclick = () => addDice(12);
 addD10Button.onclick = () => addDice(10);
-addD100Button.onclick = () => addDice(100);
+addDPercentButton.onclick = () => addDice("%");
 addD8Button.onclick = () => addDice(8);
 addD6Button.onclick = () => addDice(6);
 addD4Button.onclick = () => addDice(4);
