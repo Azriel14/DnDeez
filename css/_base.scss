@@ -1,0 +1,151 @@
+@use "mixins" as *;
+@use "palette" as *;
+
+// Animations
+@keyframes holographicShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes disabledShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.6;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+}
+
+// Base Styles
+* {
+  margin: 0;
+}
+
+body {
+  background-image: url(https://i.ibb.co/TY0f4m4/Dark-Space.png);
+  font-family: "Nunito Sans", Verdana, Geneva, Tahoma, sans-serif;
+  color: white;
+}
+
+// Sections
+#dicePage {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(13, 13, 13, 0.6);
+  transition: all 0.1s ease-in;
+  backdrop-filter: blur(0.5px);
+  transition: opacity 0.3s ease;
+  visibility: visible;
+  pointer-events: auto;
+  border-radius: 25px;
+  padding: 50px;
+  margin: 50px;
+
+  &.hidden {
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.diceSection,
+.diceButtons {
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 30px;
+}
+
+#resultsContainer {
+  flex-direction: column;
+  position: fixed;
+  display: flex;
+  z-index: 1000;
+  bottom: 20px;
+  left: 20px;
+  gap: 10px;
+}
+
+// Buttons
+button:not(.imageButton) {
+  @include buttonBase;
+
+  &:before {
+    background: conic-gradient(
+      from 0deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    animation: rotate 2s linear infinite;
+    transition: all 0.3s ease;
+    position: absolute;
+    height: 200%;
+    width: 200%;
+    content: "";
+    opacity: 0;
+    left: -50%;
+    top: -50%;
+  }
+
+  &:hover {
+    box-shadow: 0 15px 40px rgba(195, 66, 63, 0.5);
+    transform: translateY(-3px);
+
+    &:before {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+
+  &:disabled {
+    background: linear-gradient(45deg, #444, #666, #555, #444, #333);
+    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: disabledShift 4s ease-in-out infinite;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.3);
+    background-size: 400% 400%;
+    cursor: not-allowed;
+    transform: none;
+
+    &:before {
+      background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      animation: rotate 6s linear infinite;
+      opacity: 0.3;
+    }
+
+    &:hover {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: none;
+    }
+  }
+}
+
+.imageButton {
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    transform: translateY(-3px) !important;
+  }
+  &:active {
+    transform: translateY(-1px) scale(0.98) !important;
+  }
+}

@@ -246,19 +246,20 @@ function clearHistory() {
 // UI Toggles
 async function diceToggleFunc() {
   if (diceOpen === false) {
+    dicePage.style.visibility = "visible";
     dicePage.style.opacity = "1";
+    dicePage.style.pointerEvents = "auto";
     diceOpen = true;
   } else if (diceOpen === true) {
     dicePage.style.opacity = "0";
-
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    dicePage.style.pointerEvents = "none";
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    dicePage.style.visibility = "hidden";
 
     while (diceSection.firstChild) {
       diceSection.removeChild(diceSection.firstChild);
     }
-
     diceOpen = false;
-
     updateDiceButtons();
   }
 }

@@ -1,0 +1,180 @@
+@use "mixins" as *;
+@use "palette" as *;
+
+// Toggle Die
+.toggleContainer {
+  filter: drop-shadow(0 0 4px $red);
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 0.3s ease;
+  position: fixed;
+  margin: 20px;
+  z-index: 99;
+  bottom: 0;
+  right: 0;
+
+  &:hover {
+    filter: drop-shadow(0 0 4px $red);
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+}
+
+#diceToggle {
+  @include holographicGradient;
+  animation: holographicShift 4s ease-in-out infinite;
+  mask-image: url("../assets/images/d20.svg");
+  mask-repeat: no-repeat;
+  display: inline-block;
+  mask-position: center;
+  mask-size: contain;
+  min-height: 125px;
+  min-width: 125px;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+}
+
+// Dice Panel Buttons
+.histButtons {
+  justify-content: center;
+  margin-bottom: 25px;
+  align-items: center;
+  flex-wrap: nowrap;
+  display: flex;
+  gap: 20px;
+}
+
+#histToggle,
+#clearHistoryButton {
+  flex-grow: 1;
+  width: 100%;
+}
+
+#rollButton {
+  margin-top: 25px;
+  flex-basis: 100%;
+  font-size: 2em;
+}
+
+// Add Dice Buttons
+#addD20Button {
+  @include diceButtonBase;
+  background-image: url("../assets/images/d20outline.svg");
+}
+
+#addD12Button {
+  @include diceButtonBase;
+  background-image: url("../assets/images/d12outline.svg");
+}
+
+#addD10Button,
+#addDPercentButton {
+  @include diceButtonBase;
+  background-image: url("../assets/images/d10outline.svg");
+}
+
+.percent {
+  -webkit-text-stroke: 2px $dark;
+  justify-content: center;
+  font-weight: 1000;
+  user-select: none;
+  display: flex;
+}
+
+#addD8Button {
+  @include diceButtonBase;
+  background-image: url("../assets/images/d8outline.svg");
+}
+
+#addD6Button {
+  @include diceButtonBase;
+  background-image: url("../assets/images/d6outline.svg");
+}
+
+#addD4Button {
+  @include diceButtonBase;
+  background-image: url("../assets/images/d4outline.svg");
+}
+
+// Dice
+.dice {
+  filter: drop-shadow(0 0 4px $red);
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  display: flex;
+  margin: 10px 0;
+  line-height: 5;
+  width: 150px;
+
+  h1 {
+    -webkit-text-stroke: 1px $dark;
+    justify-content: center;
+    line-height: inherit;
+    position: relative;
+    user-select: none;
+    background: none;
+    color: white;
+    display: flex;
+    width: 150px;
+    margin: 0;
+  }
+}
+
+.diceBG {
+  @include holographicGradient;
+  animation: holographicShift 4s ease-in-out infinite;
+  mask-image: var(--mask-url);
+  transition: all 0.3s ease;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  pointer-events: none;
+  mask-size: contain;
+  position: absolute;
+  inset: 0;
+}
+
+// Results Panels
+.resultsPanel {
+  @include holographicGradient;
+  box-shadow: 0 10px 30px rgba(195, 66, 63, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transform: translateX(-120%);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  padding: 18px 25px;
+  font-weight: bold;
+  overflow: hidden;
+  opacity: 0;
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &.condensed {
+    max-width: 90px;
+  }
+
+  .diceInfo {
+    color: $yellow;
+    margin-bottom: 4px;
+  }
+
+  .individualRolls,
+  .resultsLabel {
+    margin-bottom: 4px;
+  }
+
+  .resultsValue {
+    font-size: 2em;
+    margin-bottom: 4px;
+  }
+}
