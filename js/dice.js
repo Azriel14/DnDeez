@@ -22,14 +22,21 @@ let histOpen = true;
 let isRolling = false;
 let activeResultsPanels = [];
 
+window.diceScenes = [];
+window.diceUtils = {
+  createDiceCanvas: null,
+  cleanupDiceCanvas: null,
+  setRollingState: null,
+};
+
 const diceTypes = {
-  20: { max: 20, url: "../assets/images/d20.svg" },
-  12: { max: 12, url: "../assets/images/d12.svg" },
-  10: { max: 10, url: "../assets/images/d10.svg" },
-  "%": { max: 10, url: "../assets/images/d10.svg" },
-  8: { max: 8, url: "../assets/images/d8.svg" },
-  6: { max: 6, url: "../assets/images/d6.svg" },
-  4: { max: 4, url: "../assets/images/d4.svg" },
+  20: { max: 20} ,
+  12: { max: 12},
+  10: { max: 10},
+  "%": { max: 10},
+  8: { max: 8},
+  6: { max: 6},
+  4: { max: 4},
 };
 
 // Dice Rolling and Results
@@ -40,13 +47,11 @@ async function rollDice() {
   let results = [];
   let dice = [];
 
-  diceH1s.forEach((h1) => {
-    if (h1.parentElement) {
-      h1.parentElement.classList.add("diceRolling");
-    }
-  });
+  if (window.diceUtils.setRollingState) {
+    window.diceUtils.setRollingState(true);
+  }
 
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 40; i++) {
     await new Promise((resolve) => setTimeout(resolve, i));
     diceH1s.forEach((h1, idx) => {
       const type = h1.dataset.dieType;
@@ -60,7 +65,7 @@ async function rollDice() {
         }
         h1.textContent =
           type === "%" ? (roll * 10).toString().padStart(2, "0") : roll;
-        if (i === 69) {
+        if (i === 39) {
           results[idx] = type === "%" ? roll * 10 : roll;
           dice[idx] = type;
         }
@@ -68,11 +73,9 @@ async function rollDice() {
     });
   }
 
-  diceH1s.forEach((h1) => {
-    if (h1.parentElement) {
-      h1.parentElement.classList.remove("diceRolling");
-    }
-  });
+  if (window.diceUtils.setRollingState) {
+    window.diceUtils.setRollingState(false);
+  }
 
   isRolling = false;
   rollButton.disabled = false;
@@ -111,21 +114,36 @@ function createDiceDiv(type) {
   const div = document.createElement("div");
   div.classList.add("dice");
   div.style.position = "relative";
+  div.style.width = "200px";
+  div.style.height = "200px";
+  div.style.display = "inline-block";
 
-  const bgDiv = document.createElement("div");
-  bgDiv.classList.add("diceBG");
-  bgDiv.style.background = "";
-  bgDiv.style.setProperty("--mask-url", `url('${config.url}')`);
+  if (window.diceUtils.createDiceCanvas) {
+    const canvasData = window.diceUtils.createDiceCanvas(type);
+    div.appendChild(canvasData.canvas);
+
+    div._threeJSData = canvasData;
+  }
 
   const h1 = document.createElement("h1");
   h1.textContent = "0";
   h1.dataset.dieType = type;
+  h1.style.position = "absolute";
+  h1.style.top = "50%";
+  h1.style.left = "50%";
+  h1.style.transform = "translate(-50%, -50%)";
+  h1.style.pointerEvents = "none";
+  h1.style.zIndex = "10";
 
-  div.appendChild(bgDiv);
   div.appendChild(h1);
 
   div.addEventListener("click", () => {
     if (isRolling) return;
+
+    if (div._threeJSData && window.diceUtils.cleanupDiceCanvas) {
+      window.diceUtils.cleanupDiceCanvas(div._threeJSData);
+    }
+
     div.remove();
     updateDiceButtons();
   });
@@ -256,6 +274,13 @@ async function diceToggleFunc() {
     await new Promise((resolve) => setTimeout(resolve, 300));
     dicePage.style.visibility = "hidden";
 
+    const allDice = diceSection.querySelectorAll(".dice");
+    allDice.forEach((div) => {
+      if (div._threeJSData && window.diceUtils.cleanupDiceCanvas) {
+        window.diceUtils.cleanupDiceCanvas(div._threeJSData);
+      }
+    });
+
     while (diceSection.firstChild) {
       diceSection.removeChild(diceSection.firstChild);
     }
@@ -286,6 +311,7 @@ function updateHistoryButtons() {
   if (clearHistoryButton) clearHistoryButton.disabled = !hasHistory;
 }
 
+// Event Listeners
 diceToggle.onclick = diceToggleFunc;
 histToggle.onclick = histToggleFunc;
 clearHistoryButton.onclick = clearHistory;
@@ -299,6 +325,7 @@ addD8Button.onclick = () => addDice(8);
 addD6Button.onclick = () => addDice(6);
 addD4Button.onclick = () => addDice(4);
 
+// Initialize
 diceToggleFunc();
 histToggleFunc();
 renderHistory();

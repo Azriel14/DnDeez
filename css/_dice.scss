@@ -103,19 +103,11 @@
 // Dice
 .dice {
   filter: drop-shadow(0 0 4px $red);
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  display: flex;
-  margin: 10px 0;
-  line-height: 5;
-  width: 150px;
 
   h1 {
     -webkit-text-stroke: 1px $dark;
     justify-content: center;
     line-height: inherit;
-    position: relative;
     user-select: none;
     background: none;
     color: white;
