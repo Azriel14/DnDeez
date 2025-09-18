@@ -103,6 +103,8 @@
 // Dice
 .dice {
   filter: drop-shadow(0 0 4px $red);
+  transition: all 0.3s ease;
+  border-radius: 15px;
 
   h1 {
     -webkit-text-stroke: 1px $dark;
@@ -115,7 +117,18 @@
     width: 150px;
     margin: 0;
   }
+
+  &:hover {
+    filter: drop-shadow(0 0 4px $dark);
+    background-color: #634e5a80;
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
+  }
 }
+
 
 .diceBG {
   @include holographicGradient;

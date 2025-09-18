@@ -52,6 +52,9 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   display: flex;
+}
+
+.diceButtons {
   gap: 30px;
 }
 
@@ -288,6 +291,8 @@ button:not(.imageButton):disabled:hover {
 
 .dice {
   filter: drop-shadow(0 0 4px #c3423f);
+  transition: all 0.3s ease;
+  border-radius: 15px;
 }
 .dice h1 {
   -webkit-text-stroke: 1px #211a1e;
@@ -301,6 +306,14 @@ button:not(.imageButton):disabled:hover {
   display: flex;
   width: 150px;
   margin: 0;
+}
+.dice:hover {
+  filter: drop-shadow(0 0 4px #211a1e);
+  background-color: rgba(99, 78, 90, 0.5019607843);
+  transform: translateY(-3px);
+}
+.dice:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
 .diceBG {
